@@ -1,0 +1,16 @@
+{
+  "name": "session-learner",
+  "description": "Learns how you like to work from your own messages and carries those preferences into every session.",
+  "userConfig": {
+    "model": {
+      "type": "string",
+      "title": "Reflection model",
+      "description": "Model that turns your messages into preferences.",
+      "options": [
+        "haiku",
+        "sonnet"
+      ],
+      "default": "haiku"
+    }
+  }
+}

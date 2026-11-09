@@ -1,0 +1,5 @@
+{
+  "name": "progress",
+  "description": "Band above the prompt: objective, current task, percent and tasks done/remaining",
+  "types": "./types/index.d.ts"
+}

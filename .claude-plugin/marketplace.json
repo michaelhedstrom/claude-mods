@@ -1,0 +1,10 @@
+{
+  "name": "michaelhedstrom-mods",
+  "owner": { "name": "Michael Hedström" },
+  "description": "Claude Code mods: context-keeper, session-learner and progress",
+  "plugins": [
+    { "name": "context-keeper", "source": "./context-keeper" },
+    { "name": "session-learner", "source": "./session-learner" },
+    { "name": "progress", "source": "./progress" }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "name": "context-keeper",
+  "description": "Keeps long sessions sharp: compacts early, keeps a ledger of decisions, corrections and files that survives compaction.",
+  "types": "./types/index.d.ts",
+  "userConfig": {
+    "threshold": {
+      "type": "number",
+      "title": "Compact at context %",
+      "description": "Compact once the context window is this full (20-90).",
+      "default": 50
+    },
+    "showRecent": {
+      "type": "boolean",
+      "title": "List recent ledgers at start",
+      "description": "At session start, tell Claude about this project's 5 latest session ledgers (a few lines of context).",
+      "default": true
+    },
+    "maxTokens": {
+      "type": "number",
+      "title": "Compact at tokens",
+      "description": "Compact once context reaches this many tokens, whichever comes first.",
+      "default": 400000
+    }
+  }
+}
