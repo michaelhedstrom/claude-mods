@@ -186,6 +186,41 @@ test('should update the status after each model response mid-turn', async ($, on
   expect(statuses.at(-1)).toBe('ctx ▰▰▰▱▱▱▱▱▱▱ 105k/400k · 295k left')
 })
 
+test('should reset the status line to an empty ledger on /clear', async ($, on) => {
+  world(on, { id: 's1', tokens: 120_000 })
+  const statuses: (string | undefined)[] = []
+  on('ui.status', (_, e) => {
+    statuses.push(e.text)
+    return { value: undefined }
+  })
+  on('session.end', (_, e) => ({ sessionId: e.sessionId }))
+  await $.session.start({ cwd: '/', surface: 'terminal', isInteractive: true })
+  await $.tool.call({ tool: NOTE, kind: 'decision', text: 'keep it' })
+  await $.turn.complete(turn)
+  expect(statuses.at(-1)).toContain('✎ 1')
+
+  await $.session.end({ reason: 'clear', sessionId: 's1', resume: { id: 's1' } })
+
+  expect(statuses.at(-1)).toBe('ctx ▱▱▱▱▱▱▱▱▱▱ 0k/400k · 400k left')
+})
+
+test('should leave the status line alone when the session ends for good', async ($, on) => {
+  world(on, { id: 's1', tokens: 120_000 })
+  const statuses: (string | undefined)[] = []
+  on('ui.status', (_, e) => {
+    statuses.push(e.text)
+    return { value: undefined }
+  })
+  on('session.end', (_, e) => ({ sessionId: e.sessionId }))
+  await $.session.start({ cwd: '/', surface: 'terminal', isInteractive: true })
+  await $.turn.complete(turn)
+  const before = statuses.length
+
+  await $.session.end({ reason: 'prompt_input_exit', sessionId: 's1', resume: { id: 's1' } })
+
+  expect(statuses.length).toBe(before)
+})
+
 test('should refuse a new note when the ledger is full, but accept a merge', async ($, on) => {
   world(on)
   await $.session.start({ cwd: '/', surface: 'terminal', isInteractive: true })
