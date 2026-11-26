@@ -568,6 +568,12 @@ export const register: Register = (on, options) => {
     if (held.value) {
       await persist($, e.sessionId, held.value)
     }
+    // /clear goes on under a new session id with an empty ledger, but the
+    // status line keeps the old one's figures until the next model response
+    if (e.reason === 'clear') {
+      const { context } = await $.session.usage()
+      $.ui.status(statusText(0, Math.min((context.window * percent) / 100, maxTokens), 0))
+    }
     return next(e)
   }).catch(($, e, next) => next(e))
 }
